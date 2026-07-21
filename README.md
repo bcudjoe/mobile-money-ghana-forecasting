@@ -2,7 +2,7 @@
 
 Forecasting Ghana's mobile money growth and explaining its drivers with machine learning and publicly available financial-access indicators.
 
-**Author:** Nana Asomia · **Course:** QM640 Data Analytics Capstone, Walsh College · **Term:** Summer 2026
+**Author:** Benjamin Asomia Cudjoe· **Course:** QM640 Data Analytics Capstone, Walsh College · **Term:** Third Term 2026
 
 ---
 
@@ -10,7 +10,7 @@ Forecasting Ghana's mobile money growth and explaining its drivers with machine 
 
 This project models digital financial inclusion in Ghana along two tracks that are kept deliberately separate because they use different units of analysis:
 
-- **National time-series track** — monthly Bank of Ghana payment data (~2013–present) is used to forecast mobile money transaction value and active-account growth six to twelve months ahead.
+- **National time-series track** — monthly Bank of Ghana payment data (~2019–2025) is used to forecast mobile money transaction value and active-account growth six to twelve months ahead.
 - **Individual cross-sectional track** — World Bank Global Findex survey records are used to identify which socioeconomic and financial factors drive individual adoption.
 
 The two tracks are analysed independently and their results are combined only at the interpretation stage to produce policy recommendations.
