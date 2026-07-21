@@ -120,7 +120,7 @@ All data are public and aggregate or anonymised, so there is no individual-priva
 
 If you use this work, please cite:
 
-> Asomia, N. (2026). *Predicting mobile money transactions and digital financial inclusion growth in Ghana using machine learning and financial access indicators* [QM640 Data Analytics Capstone]. Walsh College.
+> Cudjoe, B. (2026). *Predicting mobile money transactions and digital financial inclusion growth in Ghana using machine learning and financial access indicators* [QM640 Data Analytics Capstone]. Walsh College.
 
 ## Licence
 
