@@ -1,0 +1,37 @@
+dataset,variable,description,type,unit_or_values,source,frequency,role
+monthly_series,date,Month of observation (month-end),date,YYYY-MM-01,Constructed,Monthly,key
+monthly_series,mm_value,Total value of mobile money transactions,continuous,GH cedi (millions),Bank of Ghana,Monthly,target
+monthly_series,mm_volume,Number of mobile money transactions,count,transactions (millions),Bank of Ghana,Monthly,target/predictor
+monthly_series,mm_active_accts,Active mobile money accounts,count,accounts (millions),Bank of Ghana,Monthly,target
+monthly_series,mm_registered_accts,Registered mobile money accounts,count,accounts (millions),Bank of Ghana,Monthly,predictor
+monthly_series,mm_agents_active,Active mobile money agents,count,agents,Bank of Ghana,Monthly,predictor
+monthly_series,agent_density,Active agents per 100000 adults,continuous,ratio,Derived,Monthly,predictor
+monthly_series,mobile_pen,Mobile subscription penetration,continuous,percent of population,NCA,Monthly/quarterly,predictor
+monthly_series,internet_pen,Internet/data subscription penetration,continuous,percent of population,NCA,Monthly/quarterly,predictor
+monthly_series,account_ownership,Adults with a financial account,continuous,percent of adults,World Bank Findex/FAS,Annual (interpolated),predictor
+monthly_series,inflation,Year-on-year consumer price inflation,continuous,percent,Bank of Ghana,Monthly,predictor
+monthly_series,policy_rate,Bank of Ghana monetary policy rate,continuous,percent,Bank of Ghana,Monthly,predictor
+monthly_series,exch_rate,GH cedi per US dollar (period average),continuous,ratio,Bank of Ghana,Monthly,predictor
+monthly_series,gdp_proxy,Monthly composite index of economic activity,continuous,index,Bank of Ghana,Monthly,predictor
+monthly_series,elevy,Electronic Transfer Levy in effect,binary,0 before May 2022 / 1 from May 2022,Constructed,Monthly,predictor (structural break)
+monthly_series,mm_value_lag1_to_lag12,Lagged transaction value 1-12 months,continuous,GH cedi (millions),Derived,Monthly,derived feature
+monthly_series,mm_value_roll3_roll6,3- and 6-month rolling mean of value,continuous,GH cedi (millions),Derived,Monthly,derived feature
+monthly_series,mm_value_yoy,Year-on-year growth of transaction value,continuous,percent,Derived,Monthly,derived feature
+monthly_series,mm_active_accts_lag1_to_lag12,Lagged active accounts,count,accounts (millions),Derived,Monthly,derived feature
+monthly_series,month,Calendar month for seasonality,categorical,01-Dec,Derived,Monthly,derived feature
+monthly_series,t_index,Linear time index,count,months since start,Derived,Monthly,derived feature
+findex_ghana,resp_id,Anonymised respondent identifier,key,integer,Findex,Per wave,key
+findex_ghana,wave,Survey wave,categorical,2021 or 2025,Findex,Per wave,key
+findex_ghana,adopts_mm,Respondent uses a mobile money account,binary,1 yes / 0 no,Findex,Per wave,target
+findex_ghana,has_account,Owns any financial or mobile account,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,made_digital_payment,Made/received a digital payment in past year,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,income_quintile,Within-economy income quintile,categorical,1 poorest to 5 richest,Findex,Per wave,predictor
+findex_ghana,education,Highest education level,categorical,primary or less/secondary/tertiary,Findex,Per wave,predictor
+findex_ghana,age,Respondent age,continuous,years,Findex,Per wave,predictor
+findex_ghana,female,Respondent is female,binary,1 female / 0 male,Findex,Per wave,predictor
+findex_ghana,urban,Lives in an urban area,binary,1 urban / 0 rural,Findex,Per wave,predictor
+findex_ghana,owns_mobile,Owns a mobile phone,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,has_internet,Has internet access,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,employed,In the labour force/employed,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,borrowed_formal,Borrowed from a formal institution in past year,binary,0 or 1,Findex,Per wave,predictor
+findex_ghana,saved_formal,Saved at a formal institution in past year,binary,0 or 1,Findex,Per wave,predictor
