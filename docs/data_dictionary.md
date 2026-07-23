@@ -19,8 +19,8 @@ One row per calendar month (~2013–present). Used for RQ2 (forecasting) and RQ3
 | `mm_registered_accts` | Registered mobile money accounts | count | accounts (millions) | 0 – 70+ | Bank of Ghana | Monthly | predictor |
 | `mm_agents_active` | Active mobile money agents | count | agents | 0 – 900,000+ | Bank of Ghana | Monthly | predictor |
 | `agent_density` | Active agents per 100,000 adults | continuous | ratio | 0 – 5,000+ | Derived (agents ÷ adult population) | Monthly | predictor |
-| `mobile_pen` | Mobile subscription penetration | continuous | % of population | 100 – 140 | NCA | Monthly / quarterly | predictor |
-| `internet_pen` | Internet / data subscription penetration | continuous | % of population | 30 – 100 | NCA / World Bank | Monthly / quarterly | predictor |
+| `mobile_pen` | Mobile subscription penetration | continuous | % of population | 100 – 140 | NCA | Monthly | predictor |
+| `internet_pen` | Internet / data subscription penetration | continuous | % of population | 30 – 100 | NCA | Monthly | predictor |
 | `account_ownership` | Adults with a financial account | continuous | % of adults | 40 – 95 | World Bank Findex / FAS | Annual (interpolated) | predictor |
 | `inflation` | Year-on-year consumer price inflation | continuous | % | 5 – 55 | Bank of Ghana | Monthly | predictor |
 | `policy_rate` | Bank of Ghana monetary policy rate | continuous | % | 13 – 30 | Bank of Ghana | Monthly | predictor |
@@ -62,12 +62,3 @@ One row per survey respondent (Global Findex Ghana, 2021 and 2025 waves; ~1,000 
 | `employed` | In the labour force / employed | binary | {0, 1} | Findex | predictor |
 | `borrowed_formal` | Borrowed from a formal institution in past year | binary | {0, 1} | Findex | predictor |
 | `saved_formal` | Saved at a formal institution in past year | binary | {0, 1} | Findex | predictor |
-
----
-
-## Notes
-
-- **Units for value:** `mm_value` is stored in GH¢ millions in the processed table to keep numbers manageable; the raw Bank of Ghana series is reported in GH¢. Confirm the exact unit against each monthly release during cleaning.
-- **Interpolation:** annual indicators (e.g., `account_ownership`) are forward-filled or linearly interpolated to monthly frequency for the time-series track; the method used is recorded in `02_cleaning_merge.ipynb`.
-- **Ranges** are indicative for validation checks, not hard bounds — update them once the data are pulled.
-- **Missing values** are coded as empty cells (NaN), never as 0, to avoid distorting models.
