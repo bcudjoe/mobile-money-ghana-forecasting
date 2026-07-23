@@ -64,12 +64,12 @@ mobile-money-ghana-forecasting/
 
 | Source | Content used | Frequency | Access | Licence / terms |
 |--------|--------------|-----------|--------|-----------------|
-| [Bank of Ghana – Payment Systems Statistics](https://www.bog.gov.gh/banking-and-payments-system/payment-systems-statistics/) | Transaction value & volume, accounts, agents | Monthly, ~2013–present | Public download | Open, attribution |
-| [Bank of Ghana – Statistical Bulletin](https://www.bog.gov.gh/publications/statistical-bulletin/) | Inflation, policy rate, exchange rate | Monthly / quarterly | Public download | Open, attribution |
-| [World Bank Global Findex](https://www.worldbank.org/en/publication/globalfindex) | Individual adoption & correlates | Survey waves (2011–2025) | Free registration (microdata library) | CC BY 4.0 |
-| [IMF Financial Access Survey](https://data.imf.org/en/datasets/IMF.STA:FAS) | Annual mobile money indicators | Annual, 2004–present | Public / [FRED API mirror](https://fred.stlouisfed.org/series/GHAFCMARNUM) | Open, attribution |
-| [National Communications Authority (Ghana)](https://nca.org.gh) | Mobile & data subscriptions | Monthly / quarterly | Public | Open, attribution |
-| [World Bank WDI](https://data.worldbank.org/country/ghana) | Internet users, GDP, population | Annual | Public API | CC BY 4.0 |
+| [Bank of Ghana Database Portal – Payment Systems Statistics](https://app.datawarehousepro.com/go/bog/) | Transaction value & volume, accounts, agents | Monthly, ~2019–2025 | Public download | Open, attribution |
+| [Bank of Ghana – Statistical Bulletin](https://app.datawarehousepro.com/go/bog/) | Inflation, policy rate, exchange rate, GDP Proxy | Monthly | Public download | Open, attribution |
+| [World Bank Global Findex](https://microdata.worldbank.org/catalog/?page=1&country%5B%5D=85&collection%5B%5D=global-findex&ps=15) | Individual adoption & correlates | Survey waves (2011–2025) | Free registration (microdata library) | CC BY 4.0 |
+| [World Bank World Development Indicators](https://data.worldbank.org/country/ghana) | Account ownership, agent density | Annual(survey years, 2011–2025) | Public/ API | CC BY 4.0 |
+| [International Monetary Fund – Financial Access Survey](https://data.imf.org/en/datasets/IMF.STA:FAS) | Annual mobile money and bank-access indicators (supply-side context / cross-check) | Annual, 2004–present | Public / API  | Open, attribution |
+| [National Communications Authority (Ghana)](https://nca.org.gh/mobile-voice/ & https://nca.org.gh/mobile-data/) | Mobile & data subscriptions | Monthly / quarterly | Public | Open, attribution |
 
 > Raw files are not redistributed in this repository. `src/data_collection.py` downloads them from the sources above so the pipeline stays reproducible without violating any source's terms.
 
@@ -96,7 +96,7 @@ conda activate momo-ghana
 
 Run the notebooks in order, or the equivalent scripts in `src/`:
 
-1. **`01_data_collection.ipynb`** — pull all sources into `data/raw/`. Set a free [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html) as the environment variable `FRED_API_KEY`, and place the Findex Ghana extract (downloaded after free registration) in `data/raw/findex/`.
+1. **`01_data_collection.ipynb`** — pull all sources into `data/raw/`, and place the Findex Ghana extract (downloaded after free registration) in `data/raw/World Bank Global Findex/`.
 2. **`02_cleaning_merge.ipynb`** — clean, align to a monthly calendar, and write `data/processed/monthly_series.csv` and `findex_ghana.csv`.
 3. **`03_eda.ipynb`** — exploratory figures and the sample-size checks.
 4. **`04_rq1_adoption_drivers.ipynb`** — logistic regression + SHAP driver ranking.
@@ -120,7 +120,7 @@ All data are public and aggregate or anonymised, so there is no individual-priva
 
 If you use this work, please cite:
 
-> Cudjoe, B. (2026). *Predicting mobile money transactions and digital financial inclusion growth in Ghana using machine learning and financial access indicators* [QM640 Data Analytics Capstone]. Walsh College.
+> Cudjoe, B. A. (2026). *Predicting mobile money transactions and digital financial inclusion growth in Ghana using machine learning and financial access indicators* [QM640 Data Analytics Capstone]. Walsh College.
 
 ## Licence
 
