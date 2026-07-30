@@ -61,7 +61,7 @@ mobile-money-ghana-forecasting/
 |------------|---------|--------|--------|
 | `monthly_series.xlsx` | Monthly transaction value & volume, accounts, agents, macro indicators, mobile and internet penetration | Bank of Ghana Database Portal, National Communications Authority | Public (app.datawarehousepro.com/go/bog/, nca.org.gh/mobile-voice/ and nca.org.gh/mobile-data) |
 | `findex_ghana_2021.xlsx`, `findex_ghana_2025.xlsx` | Individual adoption and correlates | World Bank Global Findex | Public, free registration ([microdata.worldbank.org](https://microdata.worldbank.org/catalog/4646), [microdata.worldbank.org](https://microdata.worldbank.org/catalog/7860)) |
-| `agent_density_population.xlsx` | Annual total and adult population, 2019–2025 | World Bank WDI | Public / API ([data.worldbank.org](https://data.worldbank.org/country/ghana)) |
+| `agent_density_population.xlsx` | Annual total and adult population, 2019–2025 | World Bank WDI (SP.POP.TOTL & SP.POP.1564.TO) | Public / API ([data.worldbank.org](https://data.worldbank.org/country/ghana)) |
 | `yearly_account_ownership.xlsx` | Account ownership (% adults 15+), survey years 2011–2024 | World Bank Findex / WDI (FX.OWN.TOTL.ZS) | Public ([data.worldbank.org](https://data.worldbank.org/country/ghana)) / API |
 
 `agent_density_population.xlsx` supports interpolation of the `agent_density` variable; `yearly_account_ownership.xlsx` supports interpolation of the monthly `account_ownership` variable.
