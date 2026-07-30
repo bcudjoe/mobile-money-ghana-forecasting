@@ -1,0 +1,38 @@
+dataset,variable,description,type,unit_or_values,source,role
+monthly_series_clean,date,Month of observation,date,YYYY-MM-01,Constructed,key
+monthly_series_clean,mm_value,Monthly mobile money transaction value,continuous,GH cedi millions,Bank of Ghana,target
+monthly_series_clean,mm_volume,Number of transactions,count,transactions,Bank of Ghana,predictor
+monthly_series_clean,mm_active_accts,Active mobile money accounts,count,accounts,Bank of Ghana,target
+monthly_series_clean,mm_registered_accts,Registered mobile money accounts,count,accounts,Bank of Ghana,predictor
+monthly_series_clean,mm_agents_active,Active mobile money agents,count,agents,Bank of Ghana,predictor
+monthly_series_clean,agent_density,Active agents per 100000 adults,continuous,ratio,Computed,predictor
+monthly_series_clean,mobile_pen,Mobile subscription penetration,continuous,percent,NCA,predictor
+monthly_series_clean,internet_pen,Internet subscription penetration,continuous,percent,NCA,predictor
+monthly_series_clean,account_ownership,Adults with an account,continuous,percent,Computed (interpolated),predictor
+monthly_series_clean,inflation,Year-on-year inflation,continuous,percent,Bank of Ghana,predictor
+monthly_series_clean,policy_rate,Monetary policy rate,continuous,percent,Bank of Ghana,predictor
+monthly_series_clean,exch_rate,GH cedi per USD,continuous,ratio,Bank of Ghana,predictor
+monthly_series_clean,gdp_proxy,Composite index of economic activity,continuous,index,Bank of Ghana,predictor
+monthly_series_clean,elevy,E-Levy in effect,binary,0/1,Constructed,predictor
+monthly_series_clean,mm_value_lag1_to_lag12,Transaction value lagged 1-12 months,continuous,GH cedi millions,Engineered,derived feature
+monthly_series_clean,mm_active_accts_lag1_to_lag12,Active accounts lagged 1-12 months,count,accounts,Engineered,derived feature
+monthly_series_clean,mm_value_roll3,3-month rolling mean of value,continuous,GH cedi millions,Engineered,derived feature
+monthly_series_clean,mm_value_roll6,6-month rolling mean of value,continuous,GH cedi millions,Engineered,derived feature
+monthly_series_clean,mm_value_yoy,Year-on-year growth of value,continuous,percent,Engineered,derived feature
+monthly_series_clean,month,Calendar month,categorical,1-12,Engineered,derived feature
+monthly_series_clean,t_index,Linear time index,count,1-84,Engineered,derived feature
+findex_ghana_clean,resp_id,Respondent identifier,key,integer,Findex,key
+findex_ghana_clean,wave,Survey wave,categorical,2021 or 2025,Findex,key
+findex_ghana_clean,adopts_mm,Uses mobile money,binary,0/1,Findex,target
+findex_ghana_clean,has_account,Owns any account,binary,0/1,Findex,predictor
+findex_ghana_clean,made_digital_payment,Made/received digital payment,binary,0/1,Findex,predictor
+findex_ghana_clean,income_quintile,Income quintile,categorical,1-5,Findex,predictor
+findex_ghana_clean,education,Education level,categorical,1-3,Findex,predictor
+findex_ghana_clean,age,Age,continuous,years,Findex,predictor
+findex_ghana_clean,female,Female,binary,0/1 (recoded from 1/2),Findex,predictor
+findex_ghana_clean,urban,Urban residence,binary,0/1 (recoded),Findex,predictor
+findex_ghana_clean,owns_mobile,Owns a mobile phone,binary,0/1 (3/4 to missing),Findex,predictor
+findex_ghana_clean,has_internet,Has internet access,binary,0/1 (2 to missing),Findex,predictor
+findex_ghana_clean,employed,Employed,binary,0/1 (recoded),Findex,predictor
+findex_ghana_clean,borrowed_formal,Borrowed formally,binary,0/1 (3/4 to missing),Findex,predictor
+findex_ghana_clean,saved_formal,Saved formally,binary,0/1 (3/4 to missing),Findex,predictor
