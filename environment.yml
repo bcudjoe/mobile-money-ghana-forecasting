@@ -1,0 +1,17 @@
+name: momo-ghana
+channels: [conda-forge, defaults]
+dependencies:
+  - python=3.11
+  - pandas>=2.1
+  - numpy>=1.26
+  - matplotlib>=3.8
+  - scikit-learn>=1.4
+  - statsmodels>=0.14
+  - openpyxl>=3.1
+  - jupyter>=1.0
+  - pip
+  - pip:
+      - prophet>=1.1
+      - xgboost>=2.0
+      - lightgbm>=4.3
+      - shap>=0.44

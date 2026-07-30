@@ -2,26 +2,26 @@
 
 Forecasting Ghana's mobile money growth and explaining its drivers with machine learning and publicly available financial-access indicators.
 
-**Author:** Benjamin Asomia Cudjoe· **Course:** QM640 Data Analytics Capstone, Walsh College · **Term:** Third Term 2026
+**Author:** Benjamin Asomia Cudjoe · **Course:** QM640 Data Analytics Capstone, Walsh College · **Term:** Third Term 2026
 
 ---
 
 ## Overview
 
-This project models digital financial inclusion in Ghana along two tracks that are kept deliberately separate because they use different units of analysis:
+This project studies digital financial inclusion in Ghana along two tracks that are kept separate because they use different units of analysis:
 
-- **National time-series track** — monthly Bank of Ghana payment data (~2019–2025) is used to forecast mobile money transaction value and active-account growth six to twelve months ahead.
-- **Individual cross-sectional track** — World Bank Global Findex survey records are used to identify which socioeconomic and financial factors drive individual adoption.
+- **National time-series track** — a monthly Bank of Ghana payment panel of **84 months (January 2019 – December 2025)** is used to forecast mobile money transaction value and active-account growth six to twelve months ahead.
+- **Individual cross-sectional track** — **2,000 pooled Global Findex respondents** (1,000 from the 2021 wave and 1,000 from the 2025 wave) are used to identify which socioeconomic and financial factors drive individual adoption.
 
-The two tracks are analysed independently and their results are combined only at the interpretation stage to produce policy recommendations.
+The two tracks are analysed on their own and their results are combined only at the interpretation stage to produce policy recommendations.
 
 ## Research questions
 
 | RQ | Question | Track | Method |
 |----|----------|-------|--------|
-| RQ1 | Which factors most strongly drive mobile money adoption? | Individual (Findex) | Logistic regression + SHAP on a tree model |
-| RQ2 | Can ML accurately forecast transaction value and account growth? | National monthly | SARIMA / Prophet baselines + gradient boosting on lag features |
-| RQ3 | Which algorithm forecasts most accurately? | National monthly | Rolling-origin backtest + Diebold–Mariano test |
+| RQ1 | Which factors most strongly drive mobile money adoption? | Individual (Findex, n = 2,000) | Logistic regression + tree model with driver ranking |
+| RQ2 | Can models forecast transaction value and account growth? | National monthly (n = 84) | Lag-feature regression, with SARIMA/Prophet and gradient boosting to follow |
+| RQ3 | Which approach forecasts most accurately? | National monthly | Holdout comparison (RMSE/MAE/MAPE/R²) |
 | RQ4 | What policy actions improve inclusion? | Synthesis | Driver-based scenario analysis |
 
 ## Repository structure
@@ -29,99 +29,71 @@ The two tracks are analysed independently and their results are combined only at
 ```
 mobile-money-ghana-forecasting/
 ├── data/
-│   ├── raw/                     # original downloads (large files git-ignored)
-│   ├── interim/                 # cleaned, pre-merge
-│   └── processed/               # model-ready tables
-│       ├── monthly_series.csv   # national monthly panel (RQ2/RQ3)
-│       └── findex_ghana.csv     # individual records (RQ1)
+│   ├── raw/                         # source downloads
+│   │   ├── monthly_series.xlsx          # BoG monthly panel (raw columns)
+│   │   ├── findex_ghana_2021.xlsx       # Findex 2021 wave
+│   │   ├── findex_ghana_2025.xlsx       # Findex 2025 wave
+│   │   ├── agent_density_population.xlsx # annual adult population 2019–2025
+│   │   └── yearly_account_ownership.xlsx# Findex/WDI account ownership 2011–2024
+│   └── processed/                   # model-ready tables (built by 02_cleaning.ipynb)
+│       ├── monthly_series_clean.csv     # national monthly panel + engineered features
+│       └── findex_ghana_clean.csv       # pooled, recoded respondent records
 ├── notebooks/
 │   ├── 01_data_collection.ipynb
-│   ├── 02_cleaning_merge.ipynb
+│   ├── 02_cleaning.ipynb            # recoding, interpolation, feature engineering
 │   ├── 03_eda.ipynb
 │   ├── 04_rq1_adoption_drivers.ipynb
 │   ├── 05_rq2_forecasting.ipynb
 │   ├── 06_rq3_model_comparison.ipynb
 │   └── 07_rq4_scenarios.ipynb
-├── src/
-│   ├── config.py                # paths, source URLs, constants
-│   ├── data_collection.py       # download / API pulls (FRED, World Bank)
-│   ├── features.py              # lags, rolling means, YoY, E-Levy flag
-│   ├── models.py                # model definitions and tuning
-│   └── evaluate.py              # RMSE / MAE / MAPE / R2, Diebold–Mariano
 ├── outputs/
-│   ├── figures/                 # EDA and result charts
-│   ├── models/                  # serialized fitted models
-│   └── forecasts/               # forecast tables with error bands
+│   └── figures/                     # EDA and result charts (Figures 1–8)
 ├── docs/
-│   └── data_dictionary.md       # full variable definitions (also .csv)
+│   └── data_dictionary.md           # full variable definitions (also .csv)
 ├── requirements.txt
-├── environment.yml
 ├── .gitignore
 └── README.md
 ```
 
-## Data sources and licences
+## Data inputs and sources
 
-| Source | Content used | Frequency | Access | Licence / terms |
-|--------|--------------|-----------|--------|-----------------|
-| [Bank of Ghana Database Portal – Payment Systems Statistics](https://app.datawarehousepro.com/go/bog/) | Transaction value & volume, accounts, agents | Monthly, ~2019–2025 | Public download | Open, attribution |
-| [Bank of Ghana – Statistical Bulletin](https://app.datawarehousepro.com/go/bog/) | Inflation, policy rate, exchange rate, GDP Proxy | Monthly | Public download | Open, attribution |
-| [World Bank Global Findex](https://microdata.worldbank.org/catalog/?page=1&country%5B%5D=85&collection%5B%5D=global-findex&ps=15) | Individual adoption & correlates | Survey waves (2011–2025) | Free registration (microdata library) | CC BY 4.0 |
-| [World Bank World Development Indicators](https://data.worldbank.org/country/ghana) | Account ownership, agent density | Annual(survey years, 2011–2025) | Public/ API | CC BY 4.0 |
-| [International Monetary Fund – Financial Access Survey](https://data.imf.org/en/datasets/IMF.STA:FAS) | Annual mobile money and bank-access indicators (supply-side context / cross-check) | Annual, 2004–present | Public / API  | Open, attribution |
-| [National Communications Authority (Ghana)](https://nca.org.gh/mobile-voice/ & https://nca.org.gh/mobile-data/) | Mobile & data subscriptions | Monthly / quarterly | Public | Open, attribution |
+| Input file | Content | Source | Access |
+|------------|---------|--------|--------|
+| `monthly_series.xlsx` | Monthly transaction value & volume, accounts, agents, macro indicators | Bank of Ghana Database Portal | Public (app.datawarehousepro.com/go/bog/) |
+| `findex_ghana_2021.xlsx`, `findex_ghana_2025.xlsx` | Individual adoption and correlates | World Bank Global Findex | Public, free registration (microdata.worldbank.org) |
+| `agent_density_population.xlsx` | Annual total and adult population, 2019–2025 | World Bank WDI | Public / API (data.worldbank.org) |
+| `yearly_account_ownership.xlsx` | Account ownership (% adults 15+), survey years 2011–2024 | World Bank Findex / WDI (FX.OWN.TOTL.ZS) | Public / API |
 
-> Raw files are not redistributed in this repository. `src/data_collection.py` downloads them from the sources above so the pipeline stays reproducible without violating any source's terms.
+`agent_density_population.xlsx` supports interpolation of the `agent_density` variable; `yearly_account_ownership.xlsx` supports interpolation of the monthly `account_ownership` variable.
 
-## Data dictionary
+## What `02_cleaning.ipynb` produces
 
-Full variable definitions are in [`docs/data_dictionary.md`](docs/data_dictionary.md) (machine-readable version: `docs/data_dictionary.csv`).
+- Computes `agent_density` = active agents ÷ (adult population ÷ 100,000), after interpolating annual population to monthly.
+- Computes monthly `account_ownership` by interpolating the five survey-year points (2011–2024) across the 2019–2025 window.
+- Engineers 1–12 month lags of value and active accounts, 3- and 6-month rolling means, year-on-year growth, calendar month, a linear time index, and confirms the E-Levy indicator (44 months from May 2022).
+- Pools the two Findex waves (2,000 rows) and **recodes** the raw survey codes to 0/1, mapping don't-know/refused (codes 3, 4, and a stray 5 in education) to missing, then imputes the few remaining gaps.
 
 ## Environment setup
 
-Python 3.11 is recommended.
+Python 3.11 recommended.
 
 ```bash
-# with pip
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-
-# or with conda
-conda env create -f environment.yml
-conda activate momo-ghana
 ```
 
 ## How to reproduce
 
-Run the notebooks in order, or the equivalent scripts in `src/`:
-
-1. **`01_data_collection.ipynb`** — pull all sources into `data/raw/`, and place the Findex Ghana extract (downloaded after free registration) in `data/raw/World Bank Global Findex/`.
-2. **`02_cleaning_merge.ipynb`** — clean, align to a monthly calendar, and write `data/processed/monthly_series.csv` and `findex_ghana.csv`.
-3. **`03_eda.ipynb`** — exploratory figures and the sample-size checks.
-4. **`04_rq1_adoption_drivers.ipynb`** — logistic regression + SHAP driver ranking.
-5. **`05_rq2_forecasting.ipynb`** — SARIMA / Prophet baselines and gradient boosting forecasts.
-6. **`06_rq3_model_comparison.ipynb`** — rolling-origin backtest and Diebold–Mariano test.
-7. **`07_rq4_scenarios.ipynb`** — scenario analysis and the regional inclusion map.
-
-All figures and forecast tables are written to `outputs/`.
-
-## Outputs
-
-- `outputs/forecasts/` — 6–12 month forecasts of transaction value and active accounts with error bands.
-- `outputs/figures/` — EDA charts, SHAP driver rankings, model-comparison plots, and the regional inclusion map.
-- `outputs/models/` — serialized fitted models for reuse.
+1. Place the five raw files in `data/raw/`.
+2. Run `notebooks/02_cleaning.ipynb` to build `data/processed/monthly_series_clean.csv` and `findex_ghana_clean.csv`.
+3. Run `03_eda.ipynb` for the figures in `outputs/figures/`.
+4. Run `04`–`07` for the RQ1 adoption model, the RQ2/RQ3 forecasts and comparison, and the RQ4 scenarios.
 
 ## Ethics and limitations
 
-All data are public and aggregate or anonymised, so there is no individual-privacy risk. The main analytical caveats are survey waves spaced years apart, macroeconomic series that may be revised after first release, and a structural break from the **Electronic Transfer Levy (May 2022)**, which is encoded as an indicator variable before modelling.
-
-## Citation
-
-If you use this work, please cite:
-
-> Cudjoe, B. A. (2026). *Predicting mobile money transactions and digital financial inclusion growth in Ghana using machine learning and financial access indicators* [QM640 Data Analytics Capstone]. Walsh College.
+All data are public and either aggregate or anonymised, so there is no individual-privacy risk. The main caveats are the short monthly series (84 points), the interpolation of annual indicators to monthly frequency, only two Findex waves, and the May-2022 Electronic Transfer Levy, which is encoded as an indicator variable before modelling.
 
 ## Licence
 
-Code released under the MIT Licence. Data remain under the terms of their respective sources listed above.
+Code released under the MIT Licence. Data remain under the terms of their respective sources.

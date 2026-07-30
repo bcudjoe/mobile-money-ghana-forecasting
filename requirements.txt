@@ -1,26 +1,12 @@
-# Core
-python-dotenv>=1.0
 pandas>=2.1
 numpy>=1.26
-
-# Data access
-fredapi>=0.5
-requests>=2.31
+matplotlib>=3.8
 openpyxl>=3.1
-
-# Modelling
 scikit-learn>=1.4
 statsmodels>=0.14
+jupyter>=1.0
+# optional advanced models (used in notebooks 04-06 if installed)
 prophet>=1.1
 xgboost>=2.0
 lightgbm>=4.3
-pmdarima>=2.0
-
-# Explainability & stats
 shap>=0.44
-
-# Visualisation & notebooks
-matplotlib>=3.8
-seaborn>=0.13
-plotly>=5.18
-jupyter>=1.0
