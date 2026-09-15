@@ -19,10 +19,18 @@ The two tracks are analysed on their own and their results are combined only at 
 
 | RQ | Question | Track | Method |
 |----|----------|-------|--------|
-| RQ1 | Which factors most strongly drive mobile money adoption? | Individual (Findex, n = 2,000) | Logistic regression + tree model with driver ranking |
-| RQ2 | Can models forecast transaction value and account growth? | National monthly (n = 84) | Lag-feature regression, with SARIMA/Prophet and gradient boosting to follow |
-| RQ3 | Which approach forecasts most accurately? | National monthly | Holdout comparison (RMSE/MAE/MAPE/R²) |
-| RQ4 | What policy actions improve inclusion? | Synthesis | Driver-based scenario analysis |
+| RQ1 | Which factors most strongly drive mobile money adoption? | Individual (Findex, n = 2,000) | Logistic + RandomForest/XGBoost with SHAP driver ranking, near-proxy variables removed |
+| RQ2 | Can models forecast transaction value and account growth? | National monthly (n = 84) | SARIMA, Prophet, and gradient boosting (XGBoost, LightGBM) on lag features, tuned |
+| RQ3 | Which approach forecasts most accurately? | National monthly | Rolling-origin backtesting (RMSE/MAE/MAPE/R²) with a Diebold–Mariano test |
+| RQ4 | What policy actions improve inclusion? | Synthesis | Driver-based scenario projection and an inclusion view |
+
+## Results summary
+
+The project is complete. Key findings (transaction value, GH¢ millions):
+
+- **Forecasting (RQ2/RQ3).** On rolling-origin one-step backtesting across 24 origins, **SARIMA(0,1,0)(0,1,1,12)** is the most accurate model (MAPE ≈ 6.5%, R² ≈ 0.89). A Diebold–Mariano test confirms SARIMA beats the seasonal-naive benchmark (MAPE ≈ 35%) and LightGBM, and is statistically tied with Prophet and XGBoost. On the harder 12-month-ahead holdout, **Prophet** leads (MAPE ≈ 7.1%), with SARIMA close (≈ 8.2%). Selection rule: SARIMA for short-horizon operational forecasts, Prophet for the 12-month scenario horizon.
+- **Drivers (RQ1).** After removing the two near-proxy variables (`has_account`, `made_digital_payment`), logistic accuracy settles at ≈ 77% (ROC-AUC ≈ 0.85) and the RandomForest reaches ROC-AUC ≈ 0.84. SHAP ranks **mobile phone ownership, formal saving, survey wave, education, and income** as the strongest drivers; every gradient is statistically significant.
+- **Policy (RQ4).** Scenario projections show faster agent expansion (≈ +3%), wider account ownership (≈ +5%), and a lighter transfer levy (≈ +6%) each lift cumulative projected value over 12 months. The widest inclusion gaps are along income (≈ 32 pp) and education (≈ 42 pp).
 
 ## Repository structure
 
@@ -47,10 +55,12 @@ mobile-money-ghana-forecasting/
 │   ├── 06_rq3_model_comparison.ipynb
 │   └── 07_rq4_scenarios.ipynb
 ├── outputs/
-│   └── figures/                     # EDA and result charts (Figures 1–8)
+│   └── figures/                     # EDA and result charts (Figures 1–12, SHAP, backtest, scenarios)
+├── src/                             # reusable config, features, models, evaluate helpers
 ├── docs/
 │   └── data_dictionary.md           # full variable definitions (also .csv)
 ├── requirements.txt
+├── environment.yml                  # conda env "momo-ghana" (Python 3.11)
 ├── .gitignore
 └── README.md
 ```
@@ -81,14 +91,24 @@ Python 3.11 recommended.
 python -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+# or, with conda:
+conda env create -f environment.yml && conda activate momo-ghana
 ```
+
+## Run on Google Colab
+
+Each of notebooks 04–07 begins with a self-contained setup cell that installs the
+dependencies, clones this repository if the processed data are not already present,
+and fixes the random seed (`RANDOM_STATE = 42`). Open a notebook in Colab and run all
+cells; no manual steps are needed. Notebooks 06 and 07 read the tuned settings written
+by notebook 05 (`results/rq2_results.json`), so run 05 before 06 and 07.
 
 ## How to reproduce
 
-1. Place the five raw files in `data/raw/`.
+1. Place the five raw files in `data/raw/` (already included in this repository).
 2. Run `notebooks/02_cleaning.ipynb` to build `data/processed/monthly_series_clean.csv` and `findex_ghana_clean.csv`.
-3. Run `03_eda.ipynb` for the figures in `outputs/figures/`.
-4. Run `04`–`07` for the RQ1 adoption model, the RQ2/RQ3 forecasts and comparison, and the RQ4 scenarios.
+3. Run `03_eda.ipynb` for the EDA figures in `outputs/figures/`.
+4. Run `04` (RQ1 driver model with SHAP), `05` (RQ2 forecasters), `06` (RQ3 rolling-origin backtest and Diebold–Mariano test), and `07` (RQ4 scenarios), in that order.
 
 ## Ethics and limitations
 
