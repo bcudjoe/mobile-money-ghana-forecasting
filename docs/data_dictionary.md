@@ -52,8 +52,8 @@ One row per respondent; **2,000 records** pooled across the 2021 and 2025 Global
 | `resp_id` | Anonymised respondent identifier | key | — | key |
 | `wave` | Survey wave | categorical | {2021, 2025} | key |
 | `adopts_mm` | Uses a mobile money account | binary | already 0/1 | target |
-| `has_account` | Owns any financial or mobile account | binary | already 0/1 | predictor |
-| `made_digital_payment` | Made/received a digital payment in past year | binary | already 0/1 | predictor |
+| `has_account` | Owns any financial or mobile account | binary | already 0/1 | predictor (**near-proxy: excluded from final RQ1 model**) |
+| `made_digital_payment` | Made/received a digital payment in past year | binary | already 0/1 | predictor (**near-proxy: excluded from final RQ1 model**) |
 | `income_quintile` | Within-economy income quintile | categorical | 1 (poorest) – 5 (richest) | predictor |
 | `education` | Highest education level | categorical | 1 = primary or less, 2 = secondary, 3 = tertiary; **code 5 → missing** | predictor |
 | `age` | Respondent age | continuous | years; 4 missing → median imputed | predictor |
@@ -91,5 +91,6 @@ Values: 2011 = 29.4, 2014 = 40.5, 2017 = 57.7, 2021 = 68.2, 2024 = 81.2. Interpo
 ## Notes
 
 - `mm_value` is stored in GH¢ millions; observed range across the panel is roughly 20,900 – 518,400.
-- Annual inputs (population, account ownership) are interpolated to monthly; treat `account_ownership` and `agent_density` as smooth structural trends rather than high-frequency signals.
+- Annual inputs (population, account ownership) are interpolated to monthly; treat `account_ownership` and `agent_density` as smooth structural trends rather than high-frequency signals. Because these two variables are interpolated, any interpolation error propagates gently into downstream models; the transaction lags and macroeconomic series carry most of the predictive weight.
+- **Near-proxy exclusion (RQ1):** `has_account` and `made_digital_payment` overlap heavily with the target `adopts_mm` (owning a mobile account and making a digital payment both largely imply mobile money use). They inflated the interim adoption model's accuracy through leakage and are therefore **excluded from the final RQ1 driver model**. The honest RQ1 feature set is `wave`, `income_quintile`, `education`, `age`, `female`, `urban`, `owns_mobile`, `has_internet`, `employed`, `borrowed_formal`, and `saved_formal`.
 - Missing values are stored as blanks (NaN), never as 0.
